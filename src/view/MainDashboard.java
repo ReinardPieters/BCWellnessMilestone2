@@ -20,10 +20,16 @@ public class MainDashboard extends javax.swing.JFrame {
         setTitle("BC Student Wellness Dashboard"); 
         setSize(800, 600);                         
         setLocationRelativeTo(null);               
-        setResizable(false);    
+        setResizable(false);
 
+        // Remove default tab created by initComponents
+        jTabbedPane1.remove(0); // removes "tab1"
 
+        // Add your actual AppointmentPanel
+        AppointmentPanel appointmentPanel = new AppointmentPanel();
+        jTabbedPane1.addTab("Appointments", appointmentPanel);
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
