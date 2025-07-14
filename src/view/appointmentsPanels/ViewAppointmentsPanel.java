@@ -3,9 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package view.appointmentsPanels;
-import javax.swing.JTable;
-import javax.swing.JScrollPane;
+import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
+import dao.AppointmentDAO;
+
+
 /**
  *
  * @author reina
@@ -20,12 +22,17 @@ public class ViewAppointmentsPanel extends javax.swing.JPanel {
 
         String[] columns = { "Student Name", "Counselor Name", "Date", "Time" };
         DefaultTableModel model = new DefaultTableModel(columns, 0);
+        jTable1.setModel(model); // Set model to your form’s table
 
-        JTable appointmentTable = new JTable(model);
+        // Load data from database
+        AppointmentDAO dao = new AppointmentDAO();
+        ArrayList<String[]> data = dao.getAllAppointments();
 
-        jScrollPane1.setViewportView(appointmentTable);
+        for (String[] row : data) {
+            model.addRow(row);
+        }
     }
-
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -60,7 +67,7 @@ public class ViewAppointmentsPanel extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
     }// </editor-fold>//GEN-END:initComponents
 

@@ -6,6 +6,7 @@ package view;
 
 import view.appointmentsPanels.BookAppointmentPanel;
 import view.appointmentsPanels.ViewAppointmentsPanel;
+import view.appointmentsPanels.CancelAppointments;
 /**
  *
  * @author reina
@@ -54,6 +55,11 @@ public class AppointmentPanel extends javax.swing.JPanel {
         jButton3.setText("Update Appointment");
 
         jButton4.setText("Cancel Appointment");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Manage Appointments ");
 
@@ -121,6 +127,14 @@ public class AppointmentPanel extends javax.swing.JPanel {
         jPanel1.revalidate(); 
         jPanel1.repaint();  
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        jPanel1.removeAll(); 
+        jPanel1.add(new CancelAppointments(), java.awt.BorderLayout.CENTER);
+        jPanel1.revalidate(); 
+        jPanel1.repaint(); 
+    }//GEN-LAST:event_jButton4ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -1,23 +1,28 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
-import java.util.Date;
-/**
- *
- * @author reina
- */
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 public class Appointment {
-    private String studentName;
-    private String counselorName;
-    private Date date;
-    private String time;
-    
-    public Appointment(String student, String counselor, Date date, String time) {
-        this.studentName = student;
-        this.counselorName = counselor;
+    private String student;
+    private int counselorId;
+    private LocalDate date;
+    private LocalTime time;
+    private String status;
+
+    public Appointment(String student, int counselorId, LocalDate date, LocalTime time, String status) {
+        this.student = student;
+        this.counselorId = counselorId;
         this.date = date;
         this.time = time;
-    }    
+        this.status = status;
+    }
+
+    // Getters
+    public String getStudent() { return student; }
+    public int getCounselorId() { return counselorId; }
+    public LocalDate getDate() { return date; }
+    public LocalTime getTime() { return time; }
+    public String getStatus() { return status; }
 }
+

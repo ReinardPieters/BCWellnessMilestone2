@@ -4,8 +4,16 @@
  */
 package view.appointmentsPanels;
 
+import dao.AppointmentDAO;
 import dao.CounselorDAO;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import model.Appointment;
+import model.Counselor;
+import utils.TimeUtils;
 
 /**
  *
@@ -73,6 +81,11 @@ public class BookAppointmentPanel extends javax.swing.JPanel {
         cbCounselor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         submit.setText("Make Appointment");
+        submit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                submitActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -116,12 +129,69 @@ public class BookAppointmentPanel extends javax.swing.JPanel {
                 .addContainerGap(181, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void txtStudentNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtStudentNameActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtStudentNameActionPerformed
 
+    
+    private void submitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitActionPerformed
+        String studentName = txtStudentName.getText().trim();
+        String counselorName = cbCounselor.getSelectedItem().toString();
+        String timeStr = cbTime.getSelectedItem().toString();
+        java.util.Date selectedDate = dcDate.getDate();
 
+        // 1. Validate empty fields
+        if (studentName.isEmpty() || selectedDate == null || timeStr == null || counselorName == null) {
+            JOptionPane.showMessageDialog(this, "Please fill in all fields.", "Missing Information", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // 2. Convert date and time
+        LocalDate date = selectedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalTime time = LocalTime.parse(timeStr);
+
+        // 3. Get counselor ID and full object
+        CounselorDAO counselorDAO = new CounselorDAO();
+        int counselorId = counselorDAO.getCounselorIdByName(counselorName);
+        Counselor counselor = counselorDAO.getCounselorByName(counselorName);
+
+        if (counselorId == -1 || counselor == null) {
+            JOptionPane.showMessageDialog(this, "Counselor not found in database.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // 4. Check availability
+        System.out.println("HERERERER"+counselor.getAvailability());
+        if (!TimeUtils.isWithinRange(counselor.getAvailability(), time)) {
+            JOptionPane.showMessageDialog(this, "Selected time is outside the counselor's availability.", "Invalid Time", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        System.out.println("Availability: " + counselor.getAvailability());
+        System.out.println("Selected Time: " + time);
+
+        // 5. Check if counselor is already booked
+        AppointmentDAO appointmentDAO = new AppointmentDAO();
+        boolean isBooked = appointmentDAO.isCounselorBooked(
+            counselorId,
+            java.sql.Date.valueOf(date),
+            java.sql.Time.valueOf(time)
+        );
+
+        if (isBooked) {
+            JOptionPane.showMessageDialog(this, "This counselor is already booked at the selected time.", "Conflict", JOptionPane.WARNING_MESSAGE);
+            return;
+            
+    }
+
+    // 6. Success — show a confirmation (insert logic comes next)
+        JOptionPane.showMessageDialog(this, "Appointment slot is valid. Proceed to save!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+   
+        Appointment appointment = new Appointment(studentName, counselorId, date, time, "Scheduled");
+        appointmentDAO.addAppointment(appointment); 
+        populateCounselorComboBox();
+    }//GEN-LAST:event_submitActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cbCounselor;
     private javax.swing.JComboBox<String> cbTime;

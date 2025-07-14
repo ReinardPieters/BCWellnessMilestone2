@@ -7,6 +7,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CounselorDAO {
+    public boolean deleteCounselorByName(String name) {
+        String sql = "DELETE FROM Counselors WHERE name = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            System.out.println("Trying to delete" + name);
+            stmt.setString(1, name);
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
     public ArrayList<Counselor> getAllCounselors() {
         ArrayList<Counselor> list = new ArrayList<>();
@@ -68,4 +83,42 @@ public class CounselorDAO {
 
         return names;
     }
+    public int getCounselorIdByName(String name) {
+        String sql = "SELECT id FROM Counselors WHERE name = ?";
+        try (Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, name);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1; // not found
+    }
+    
+    public Counselor getCounselorByName(String name) {
+        String sql = "SELECT * FROM Counselors WHERE name = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, name);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return new Counselor(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("specialization"),
+                    rs.getString("availability")
+                );
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
 }
