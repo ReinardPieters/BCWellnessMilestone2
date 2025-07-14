@@ -50,4 +50,22 @@ public class CounselorDAO {
             e.printStackTrace();
         }
     }
+    public ArrayList<String> getAllCounselorNames() {
+        ArrayList<String> names = new ArrayList<>();
+        String sql = "SELECT name FROM Counselors";
+
+        try (Connection conn = DBConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                names.add(rs.getString("name"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return names;
+    }
 }

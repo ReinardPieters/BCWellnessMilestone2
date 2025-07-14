@@ -4,6 +4,9 @@
  */
 package view.appointmentsPanels;
 
+import dao.CounselorDAO;
+import java.util.ArrayList;
+
 /**
  *
  * @author reina
@@ -19,6 +22,16 @@ public class BookAppointmentPanel extends javax.swing.JPanel {
         for (int hour = 8; hour <= 16; hour++) {
             String formattedTime = String.format("%02d:00", hour);
             cbTime.addItem(formattedTime);
+        }
+        populateCounselorComboBox();
+    }
+    private void populateCounselorComboBox() {
+        CounselorDAO dao = new CounselorDAO();
+        ArrayList<String> counselorNames = dao.getAllCounselorNames();
+
+        cbCounselor.removeAllItems(); // Clear existing items if any
+        for (String name : counselorNames) {
+            cbCounselor.addItem(name);
         }
     }
 
