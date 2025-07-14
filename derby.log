@@ -1,0 +1,10 @@
+----------------------------------------------------------------
+Mon Jul 14 18:11:43 SAST 2025D001 : [0] The Apache Software Foundation - Apache Derby - 10.17.1.0 - (1913217), [1] a816c00e-0198-09b4-d804-00000eaf40d0, [2] C:\Users\reina\Desktop\University\PRG381\BCWellnessMilestone2\wellnessDB, [3] jdk.internal.loader.ClassLoaders$AppClassLoader@232204a1, [4] file:/C:/src/db-derby-10.17.1.0-bin/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=24.0.1+9-30
+user.dir=C:\Users\reina\Desktop\University\PRG381\BCWellnessMilestone2
+os.name=Windows 11
+os.arch=amd64
+os.version=10.0
+derby.system.home=null
+C005 : [0] 
