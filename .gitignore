@@ -1,31 +1,49 @@
-### IntelliJ IDEA ###
-out/
-!**/src/main/**/out/
-!**/src/test/**/out/
+# === IDE & Build Systems ===
 
-### Eclipse ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
-
-### NetBeans ###
+# NetBeans
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
 
-### VS Code ###
+# IntelliJ IDEA
+.idea/
+*.iml
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+# Eclipse
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+# VS Code
 .vscode/
 
-### Mac OS ###
+# OS-specific
 .DS_Store
+Thumbs.db
 
+# === Build Artifacts ===
+/build/
+*.class
+
+# === Derby Database Files ===
 derby.log
+wellnessDB/db.lck
+wellnessDB/dbex.lck
+wellnessDB/log/
+wellnessDB/seg0/
+wellnessDB/tmp/
+wellnessDB/*.lck
+wellnessDB/service.properties
+
