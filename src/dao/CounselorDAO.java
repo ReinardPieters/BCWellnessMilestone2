@@ -7,20 +7,49 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CounselorDAO {
+    
     public boolean deleteCounselorByName(String name) {
-        String sql = "DELETE FROM Counselors WHERE name = ?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            System.out.println("Trying to delete" + name);
-            stmt.setString(1, name);
-            int rowsAffected = stmt.executeUpdate();
-            return rowsAffected > 0;
+        String getIdSql = "SELECT id FROM Counselors WHERE name = ?";
+        String deleteAppointmentsSql = "DELETE FROM Appointments WHERE counselor_id = ?";
+        String deleteCounselorSql = "DELETE FROM Counselors WHERE id = ?";
+
+        try (Connection conn = DBConnection.getConnection()) {
+            conn.setAutoCommit(false);
+
+            int counselorId = -1;
+
+            // Get Counselor ID
+            try (PreparedStatement getIdStmt = conn.prepareStatement(getIdSql)) {
+                getIdStmt.setString(1, name);
+                ResultSet rs = getIdStmt.executeQuery();
+                if (rs.next()) {
+                    counselorId = rs.getInt("id");
+                } else {
+                    System.out.println("Counselor not found: " + name);
+                    return false;
+                }
+            }
+
+            // Delete related appointments
+            try (PreparedStatement deleteAppointmentsStmt = conn.prepareStatement(deleteAppointmentsSql)) {
+                deleteAppointmentsStmt.setInt(1, counselorId);
+                deleteAppointmentsStmt.executeUpdate();
+            }
+
+            // Delete counselor
+            try (PreparedStatement deleteCounselorStmt = conn.prepareStatement(deleteCounselorSql)) {
+                deleteCounselorStmt.setInt(1, counselorId);
+                int rowsAffected = deleteCounselorStmt.executeUpdate();
+                conn.commit(); 
+                return rowsAffected > 0;
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
+
 
 
     public ArrayList<Counselor> getAllCounselors() {

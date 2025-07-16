@@ -4,16 +4,11 @@
  */
 package view.appointmentsPanels;
 
-import dao.AppointmentDAO;
-import dao.CounselorDAO;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.ZoneId;
+import controllers.AppointmentsController;
+import controllers.CounselorController;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import model.Appointment;
-import model.Counselor;
-import utils.TimeUtils;
+
 
 /**
  *
@@ -34,14 +29,14 @@ public class BookAppointmentPanel extends javax.swing.JPanel {
         populateCounselorComboBox();
     }
     private void populateCounselorComboBox() {
-        CounselorDAO dao = new CounselorDAO();
-        ArrayList<String> counselorNames = dao.getAllCounselorNames();
-
         cbCounselor.removeAllItems(); // Clear existing items if any
+
+        ArrayList<String> counselorNames = CounselorController.getAllCounselorNames();
         for (String name : counselorNames) {
             cbCounselor.addItem(name);
         }
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -132,65 +127,24 @@ public class BookAppointmentPanel extends javax.swing.JPanel {
     
     private void txtStudentNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtStudentNameActionPerformed
         // TODO add your handling code here:
+     
     }//GEN-LAST:event_txtStudentNameActionPerformed
 
     
     private void submitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitActionPerformed
         String studentName = txtStudentName.getText().trim();
-        String counselorName = cbCounselor.getSelectedItem().toString();
-        String timeStr = cbTime.getSelectedItem().toString();
+        String counselorName = cbCounselor.getSelectedItem() != null ? cbCounselor.getSelectedItem().toString() : null;
+        String timeStr = cbTime.getSelectedItem() != null ? cbTime.getSelectedItem().toString() : null;
         java.util.Date selectedDate = dcDate.getDate();
 
-        // 1. Validate empty fields
-        if (studentName.isEmpty() || selectedDate == null || timeStr == null || counselorName == null) {
-            JOptionPane.showMessageDialog(this, "Please fill in all fields.", "Missing Information", JOptionPane.WARNING_MESSAGE);
-            return;
+        String result = AppointmentsController.bookAppointment(studentName, counselorName, selectedDate, timeStr);
+
+        if (result.equals("SUCCESS")) {
+            JOptionPane.showMessageDialog(this, "Appointment slot is valid. Appointment saved!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            populateCounselorComboBox();
+        } else {
+            JOptionPane.showMessageDialog(this, result, "Error", JOptionPane.WARNING_MESSAGE);
         }
-
-        // 2. Convert date and time
-        LocalDate date = selectedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalTime time = LocalTime.parse(timeStr);
-
-        // 3. Get counselor ID and full object
-        CounselorDAO counselorDAO = new CounselorDAO();
-        int counselorId = counselorDAO.getCounselorIdByName(counselorName);
-        Counselor counselor = counselorDAO.getCounselorByName(counselorName);
-
-        if (counselorId == -1 || counselor == null) {
-            JOptionPane.showMessageDialog(this, "Counselor not found in database.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        // 4. Check availability
-        System.out.println("HERERERER"+counselor.getAvailability());
-        if (!TimeUtils.isWithinRange(counselor.getAvailability(), time)) {
-            JOptionPane.showMessageDialog(this, "Selected time is outside the counselor's availability.", "Invalid Time", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        System.out.println("Availability: " + counselor.getAvailability());
-        System.out.println("Selected Time: " + time);
-
-        // 5. Check if counselor is already booked
-        AppointmentDAO appointmentDAO = new AppointmentDAO();
-        boolean isBooked = appointmentDAO.isCounselorBooked(
-            counselorId,
-            java.sql.Date.valueOf(date),
-            java.sql.Time.valueOf(time)
-        );
-
-        if (isBooked) {
-            JOptionPane.showMessageDialog(this, "This counselor is already booked at the selected time.", "Conflict", JOptionPane.WARNING_MESSAGE);
-            return;
-            
-    }
-
-    // 6. Success — show a confirmation (insert logic comes next)
-        JOptionPane.showMessageDialog(this, "Appointment slot is valid. Proceed to save!", "Success", JOptionPane.INFORMATION_MESSAGE);
-
-   
-        Appointment appointment = new Appointment(studentName, counselorId, date, time, "Scheduled");
-        appointmentDAO.addAppointment(appointment); 
-        populateCounselorComboBox();
     }//GEN-LAST:event_submitActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cbCounselor;
