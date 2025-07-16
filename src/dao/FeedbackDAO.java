@@ -96,7 +96,35 @@ public class FeedbackDAO {
             return false;
         }
     }
+    
+    public ArrayList<String[]> getAllFeedbackEntriesWithID() {
+    ArrayList<String[]> feedbackList = new ArrayList<>();
 
+    String sql = "SELECT f.id, f.student, c.name AS counselor_name, f.rating, f.comment " +
+                 "FROM Feedback f " +
+                 "JOIN Counselors c ON f.counselor_id = c.id";
+
+    try (Connection conn = DBConnection.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql);
+         ResultSet rs = stmt.executeQuery()) {
+
+        while (rs.next()) {
+            String id = String.valueOf(rs.getInt("id"));
+            String student = rs.getString("student");
+            String counselor = rs.getString("counselor_name");
+            String rating = String.valueOf(rs.getInt("rating"));
+            String comment = rs.getString("comment");
+
+            feedbackList.add(new String[]{student, counselor, rating, comment, id});
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return feedbackList;
+    }
+    
     public boolean deleteFeedback(int id) {
         String sql = "DELETE FROM Feedback WHERE id = ?";
 

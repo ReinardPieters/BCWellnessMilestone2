@@ -74,7 +74,7 @@ public class CancelAppointments extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        btnCancel.setText("Cancel");
+        btnCancel.setText("Delete");
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelActionPerformed(evt);

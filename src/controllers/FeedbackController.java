@@ -48,8 +48,14 @@ public class FeedbackController {
         return feedbackDAO.updateFeedback(id, rating, comment);
     }
 
-    public boolean deleteFeedback(int id) {
-        return feedbackDAO.deleteFeedback(id);
+    public static boolean deleteFeedbackById(int id) {
+    FeedbackDAO dao = new FeedbackDAO();
+    return dao.deleteFeedback(id);
+    }
+
+    public static ArrayList<String[]> getAllFeedbackTableRowsWithID() {
+        FeedbackDAO dao = new FeedbackDAO();
+        return dao.getAllFeedbackEntriesWithID();  // Must return ID as 5th column
     }
 }
 

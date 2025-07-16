@@ -31,10 +31,9 @@ public class DBSetup {
                     "id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, " +
                     "student VARCHAR(100), " +
                     "rating INT, " +
-                    "comments VARCHAR(255), " +
+                    "comment VARCHAR(255), " +
                     "counselor_id INT, " +
                     "FOREIGN KEY (counselor_id) REFERENCES Counselors(id))");
-
 
             System.out.println("Tables created successfully.");//Notify successful table creation
         } catch (SQLException e) {
