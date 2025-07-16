@@ -23,7 +23,12 @@ public class ViewAppointmentsPanel extends javax.swing.JPanel {
 
 
         String[] columns = { "Student Name", "Counselor Name", "Date", "Time" };
-        DefaultTableModel model = new DefaultTableModel(columns, 0);
+        DefaultTableModel model = new DefaultTableModel(columns, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Disable editing for all cells
+            }
+        };
         jTable1.setModel(model);
 
         // 🔁 Use controller instead of DAO
