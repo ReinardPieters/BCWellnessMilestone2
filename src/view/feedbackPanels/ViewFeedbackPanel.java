@@ -1,6 +1,6 @@
 package view.feedbackPanels;
 
-import dao.FeedbackDAO;
+import controllers.FeedbackController;
 
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
@@ -13,13 +13,13 @@ public class ViewFeedbackPanel extends javax.swing.JPanel {
     public ViewFeedbackPanel() {
         initComponents();
 
-        String[] columns = { "Student Name", "Counselor Name", "", "Time" };
+        String[] columns = { "Student Name", "Counselor Name", "Rating", "Comment" };
         DefaultTableModel model = new DefaultTableModel(columns, 0);
         jTable1.setModel(model); // Set model to your form’s table
 
         // Load data from database
-        FeedbackDAO dao = new FeedbackDAO();
-        ArrayList<String[]> data = dao.getAllFeedbackEntries();
+        FeedbackController controller = new FeedbackController();
+        ArrayList<String[]> data = controller.getAllFeedbackTableRows(); // Correct method call
 
         for (String[] row : data) {
             model.addRow(row);

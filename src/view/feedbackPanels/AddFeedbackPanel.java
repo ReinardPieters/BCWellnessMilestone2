@@ -1,13 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package view.feedbackPanels;
 
-/**
- *
- * @author vaugh
- */
+import controllers.FeedbackController;
+import controllers.CounselorController;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+
 public class AddFeedbackPanel extends javax.swing.JPanel {
 
     /**
@@ -15,6 +12,44 @@ public class AddFeedbackPanel extends javax.swing.JPanel {
      */
     public AddFeedbackPanel() {
         initComponents();
+
+        buttonGroup1.add(jRadioButton1);
+        buttonGroup1.add(jRadioButton2);
+        buttonGroup1.add(jRadioButton3);
+        buttonGroup1.add(jRadioButton4);
+        buttonGroup1.add(jRadioButton5);
+        
+        populateCounselorComboBox();
+    }
+    
+    // Get the selected rating value
+    public int getSelectedRating() {
+        if (jRadioButton1.isSelected()) return 1;
+        if (jRadioButton2.isSelected()) return 2;
+        if (jRadioButton3.isSelected()) return 3;
+        if (jRadioButton4.isSelected()) return 4;
+        if (jRadioButton5.isSelected()) return 5;
+        return -1; // none selected
+    }
+
+    // Optionally: set selected rating programmatically
+    public void setSelectedRating(int rating) {
+        switch (rating) {
+            case 1 -> jRadioButton1.setSelected(true);
+            case 2 -> jRadioButton2.setSelected(true);
+            case 3 -> jRadioButton3.setSelected(true);
+            case 4 -> jRadioButton4.setSelected(true);
+            case 5 -> jRadioButton5.setSelected(true);
+        }
+    }
+    
+    private void populateCounselorComboBox() {
+        cbCounselor.removeAllItems(); // Clear existing items if any
+
+        ArrayList<String> counselorNames = CounselorController.getAllCounselorNames();
+        for (String name : counselorNames) {
+            cbCounselor.addItem(name);
+        }
     }
 
     /**
@@ -26,19 +61,177 @@ public class AddFeedbackPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
+        jRadioButton1 = new javax.swing.JRadioButton();
+        jRadioButton2 = new javax.swing.JRadioButton();
+        jRadioButton3 = new javax.swing.JRadioButton();
+        jRadioButton4 = new javax.swing.JRadioButton();
+        jRadioButton5 = new javax.swing.JRadioButton();
+        lblCounselor = new javax.swing.JLabel();
+        cbCounselor = new javax.swing.JComboBox<>();
+        lblStudentName = new javax.swing.JLabel();
+        txtStudentName = new javax.swing.JTextField();
+        lblDate = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        lblDate1 = new javax.swing.JLabel();
+        fSubmit = new javax.swing.JButton();
+
+        jRadioButton1.setText("1");
+        jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton1ActionPerformed(evt);
+            }
+        });
+
+        jRadioButton2.setText("2");
+
+        jRadioButton3.setText("3");
+
+        jRadioButton4.setText("4");
+
+        jRadioButton5.setText("5");
+
+        lblCounselor.setText("Counselor:");
+
+        cbCounselor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbCounselor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbCounselorActionPerformed(evt);
+            }
+        });
+
+        lblStudentName.setText("Student:");
+
+        txtStudentName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtStudentNameActionPerformed(evt);
+            }
+        });
+
+        lblDate.setText("Rating:");
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
+        lblDate1.setText("Comment:");
+
+        fSubmit.setText("Submit");
+        fSubmit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fSubmitActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 548, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jRadioButton1)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jRadioButton2)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jRadioButton3)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jRadioButton4)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jRadioButton5))
+                        .addComponent(lblDate)
+                        .addComponent(lblStudentName)
+                        .addComponent(lblCounselor)
+                        .addComponent(lblDate1)
+                        .addComponent(cbCounselor, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtStudentName)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE))
+                    .addComponent(fSubmit, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(250, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 420, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblStudentName)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtStudentName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblCounselor)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cbCounselor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblDate)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jRadioButton1)
+                    .addComponent(jRadioButton2)
+                    .addComponent(jRadioButton3)
+                    .addComponent(jRadioButton4)
+                    .addComponent(jRadioButton5))
+                .addGap(3, 3, 3)
+                .addComponent(lblDate1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(fSubmit)
+                .addContainerGap(125, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    
+    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
+    
+    }//GEN-LAST:event_jRadioButton1ActionPerformed
+
+    private void txtStudentNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtStudentNameActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_txtStudentNameActionPerformed
+
+private final FeedbackController feedbackController = new FeedbackController();
+    private void fSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fSubmitActionPerformed
+        String studentName = txtStudentName.getText().trim();
+        String counselorName = cbCounselor.getSelectedItem() != null ? cbCounselor.getSelectedItem().toString() : null;
+        int ratingInt = getSelectedRating();  // Should return 1–5
+        String studentComment = jTextArea1.getText().trim();
+
+        String result = feedbackController.submitFeedback(studentName, counselorName, ratingInt, studentComment);
+
+        if ("SUCCESS".equals(result)) {
+            JOptionPane.showMessageDialog(this, "Feedback submitted successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            populateCounselorComboBox();  // Optional UI refresh
+        } else {
+            JOptionPane.showMessageDialog(this, result, "Error", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_fSubmitActionPerformed
+
+    private void cbCounselorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbCounselorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbCounselorActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.JComboBox<String> cbCounselor;
+    private javax.swing.JButton fSubmit;
+    private javax.swing.JRadioButton jRadioButton1;
+    private javax.swing.JRadioButton jRadioButton2;
+    private javax.swing.JRadioButton jRadioButton3;
+    private javax.swing.JRadioButton jRadioButton4;
+    private javax.swing.JRadioButton jRadioButton5;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JLabel lblCounselor;
+    private javax.swing.JLabel lblDate;
+    private javax.swing.JLabel lblDate1;
+    private javax.swing.JLabel lblStudentName;
+    private javax.swing.JTextField txtStudentName;
     // End of variables declaration//GEN-END:variables
 }

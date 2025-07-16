@@ -1,22 +1,21 @@
 package dao;
 
 import model.Feedback;
-
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class FeedbackDAO {
 
     public boolean submitFeedback(Feedback feedback) {
-        String sql = "INSERT INTO Feedback (counselor_id, rating, comment) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO Feedback (student, counselor_id, rating, comment) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setInt(1, feedback.getCounselorID());
-            ps.setInt(2, feedback.getRating());
-            ps.setString(3, feedback.getComment());
+            ps.setString(1, feedback.getStudent());
+            ps.setInt(2, feedback.getCounselorID());
+            ps.setInt(3, feedback.getRating());
+            ps.setString(4, feedback.getComment());
 
             return ps.executeUpdate() > 0;
 
@@ -25,41 +24,69 @@ public class FeedbackDAO {
             return false;
         }
     }
-    
+
+    // Inside FeedbackDAO.java
     public ArrayList<String[]> getAllFeedbackEntries() {
-    ArrayList<String[]> feedbackList = new ArrayList<>();
+        ArrayList<String[]> feedbackList = new ArrayList<>();
 
-    String sql = "SELECT f.rating, f.comment, c.name AS counselor_name " +
-                 "FROM Feedback f " +
-                 "JOIN counselors c ON f.counselor_id = c.id";
+        String sql = "SELECT f.student, f.rating, f.comment, c.name AS counselor_name " +
+                     "FROM Feedback f " +
+                     "JOIN Counselors c ON f.counselor_id = c.id";
 
-    try (Connection conn = DBConnection.getConnection();
-         PreparedStatement stmt = conn.prepareStatement(sql);
-         ResultSet rs = stmt.executeQuery()) {
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
 
-        while (rs.next()) {
-            String rating = String.valueOf(rs.getInt("rating"));
-            String comment = rs.getString("comment");
-            String counselorName = rs.getString("counselor_name");
+            while (rs.next()) {
+                String student = rs.getString("student");
+                String rating = String.valueOf(rs.getInt("rating"));
+                String comment = rs.getString("comment");
+                String counselorName = rs.getString("counselor_name");
 
-            feedbackList.add(new String[]{counselorName, rating, comment});
+                feedbackList.add(new String[]{student, counselorName, rating, comment});
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return feedbackList;
     }
 
-    return feedbackList;
+    public ArrayList<Feedback> getAllFeedback() {
+        ArrayList<Feedback> list = new ArrayList<>();
+        String sql = "SELECT * FROM Feedback";
+
+        try (Connection conn = DBConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Feedback f = new Feedback(
+                    rs.getInt("id"),
+                    rs.getString("student"),
+                    rs.getInt("counselor_id"),
+                    rs.getInt("rating"),
+                    rs.getString("comment")
+                );
+                list.add(f);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
     }
 
-    public boolean updateFeedback(int id, int newRating, String newComment) {
+    public boolean updateFeedback(int id, int rating, String comment) {
         String sql = "UPDATE Feedback SET rating = ?, comment = ? WHERE id = ?";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setInt(1, newRating);
-            ps.setString(2, newComment);
+            ps.setInt(1, rating);
+            ps.setString(2, comment);
             ps.setInt(3, id);
 
             return ps.executeUpdate() > 0;

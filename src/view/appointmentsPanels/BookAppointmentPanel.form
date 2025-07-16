@@ -62,7 +62,7 @@
   <SubComponents>
     <Component class="javax.swing.JLabel" name="lblStudentName">
       <Properties>
-        <Property name="text" type="java.lang.String" value="StudentName:"/>
+        <Property name="text" type="java.lang.String" value="Student:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtStudentName">
