@@ -11,8 +11,10 @@ import javax.swing.table.DefaultTableModel;
 import model.Counselor;
 
 public class CounselorsPanel extends javax.swing.JPanel {
+    
+    CounselorDAO dao = new CounselorDAO();
+    
     private void loadCounselorsIntoTable() {
-        CounselorDAO dao = new CounselorDAO();
         ArrayList<Counselor> list = dao.getAllCounselors();
 
 
@@ -38,14 +40,25 @@ public class CounselorsPanel extends javax.swing.JPanel {
             if (!e.getValueIsAdjusting()) {
                 int selectedRow = jTable1.getSelectedRow();
                 if (selectedRow != -1) {
-                    String name = jTable1.getValueAt(selectedRow, 1).toString(); // Adjust column index if needed
+                    
+                    String name = jTable1.getValueAt(selectedRow, 1).toString();
+                    String speciality = jTable1.getValueAt(selectedRow, 2).toString();
+                    String availibility = jTable1.getValueAt(selectedRow, 3).toString();
+                    
+                    txtCounselorName.setText(name);  
+                    cbSpeciality.setSelectedItem(speciality);
+                    cbAvailibility.setSelectedItem(availibility);                  
+                    
                     lblSelected.setText("Selected: " + name + " (Row " + selectedRow + ")");
                 } else {
+                    txtCounselorName.setText("");
+                    cbSpeciality.setSelectedIndex(-1);
+                    cbAvailibility.setSelectedIndex(-1);
+                    
                     lblSelected.setText("Selected: None");
                 }
             }
-        });
-        
+        });        
     }
 
     /**
@@ -90,6 +103,7 @@ public class CounselorsPanel extends javax.swing.JPanel {
         jLabel5 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         lblSelected = new javax.swing.JLabel();
+        btnUpdate = new javax.swing.JButton();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -116,6 +130,11 @@ public class CounselorsPanel extends javax.swing.JPanel {
         jLabel4.setText("Availibility");
 
         cbSpeciality.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbSpeciality.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbSpecialityActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Specialality");
 
@@ -132,6 +151,13 @@ public class CounselorsPanel extends javax.swing.JPanel {
 
         lblSelected.setText("jLabel1");
 
+        btnUpdate.setText("Update");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -143,20 +169,23 @@ public class CounselorsPanel extends javax.swing.JPanel {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 549, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jLabel4)
-                                .addComponent(jLabel3)
-                                .addComponent(jLabel2)
-                                .addComponent(txtCounselorName)
-                                .addComponent(cbSpeciality, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(cbAvailibility, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel5)
-                            .addComponent(btnAddCounselor)))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(btnAddCounselor)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnUpdate))
+                                .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtCounselorName, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(cbSpeciality, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cbAvailibility, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblSelected)))
-                .addContainerGap(259, Short.MAX_VALUE))
+                .addContainerGap(250, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -178,20 +207,20 @@ public class CounselorsPanel extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cbAvailibility, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnAddCounselor))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnAddCounselor)
+                            .addComponent(btnUpdate)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(lblSelected))
-                .addContainerGap(380, Short.MAX_VALUE))
+                .addContainerGap(200, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddCounselorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCounselorActionPerformed
-        // TODO add your handling code here:
         
-   
         String name = txtCounselorName.getText().trim();
         String specialization = cbSpeciality.getSelectedItem().toString();
         String availability = cbAvailibility.getSelectedItem().toString();
@@ -201,17 +230,15 @@ public class CounselorsPanel extends javax.swing.JPanel {
             return;
         }
 
-        Counselor newCounselor = new Counselor(0, name, specialization, availability); // ID = 0 if auto-generated
-        CounselorDAO dao = new CounselorDAO();
+        Counselor newCounselor = new Counselor(0, name, specialization, availability);
 
         try {
             dao.insertCounselor(newCounselor);
             JOptionPane.showMessageDialog(this, "Counselor added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
             loadCounselorsIntoTable();
+
             // Reset form
-            txtCounselorName.setText("");
-            cbSpeciality.setSelectedIndex(0);
-            cbAvailibility.setSelectedIndex(0);
+            resetForm();
 
             // You can also reload the jTable1 data if needed here
         } catch (Exception e) {
@@ -236,7 +263,6 @@ public class CounselorsPanel extends javax.swing.JPanel {
         int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete " + name + "?", "Confirm", JOptionPane.YES_NO_OPTION);
         if (confirm != JOptionPane.YES_OPTION) return;
 
-        CounselorDAO dao = new CounselorDAO();
         boolean success = dao.deleteCounselorByName(name);
 
         if (success) {
@@ -248,9 +274,52 @@ public class CounselorsPanel extends javax.swing.JPanel {
         }      
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        
+        String name = txtCounselorName.getText().trim();
+        String specialization = cbSpeciality.getSelectedItem() != null ? cbSpeciality.getSelectedItem().toString() : "";
+        String availability = cbAvailibility.getSelectedItem() != null ? cbAvailibility.getSelectedItem().toString() : "";
+
+        if (name.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter the counselor's name.", "Input Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        int selectedRow = jTable1.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a counselor from the table first.", "Selection Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        int id = dao.getCounselorIdByName(jTable1.getModel().getValueAt(selectedRow, 1).toString());
+        if (id == -1) {
+            JOptionPane.showMessageDialog(this, "Counselor not found in the system.", "Update Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        Counselor updated = new Counselor(id, name, specialization, availability);
+        dao.updateCounselor(updated);  // optionally check if update succeeded
+
+        JOptionPane.showMessageDialog(this, "Counselor updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+        loadCounselorsIntoTable();
+        resetForm();
+    }
+
+    private void resetForm() {
+        txtCounselorName.setText("");
+        cbSpeciality.setSelectedIndex(0);
+        cbAvailibility.setSelectedIndex(0);
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void cbSpecialityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbSpecialityActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbSpecialityActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddCounselor;
+    private javax.swing.JButton btnUpdate;
     private javax.swing.JComboBox<String> cbAvailibility;
     private javax.swing.JComboBox<String> cbSpeciality;
     private javax.swing.JButton jButton1;

@@ -81,7 +81,7 @@ public class CounselorDAO {
         String sql = "INSERT INTO Counselors (name, specialization, availability) VALUES (?, ?, ?)";
 
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+            PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, c.getName());
             ps.setString(2, c.getSpecialization());
@@ -91,6 +91,39 @@ public class CounselorDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+    public void updateCounselor(Counselor c) {
+        String sql = "UPDATE Counselors SET name = ?, specialization = ?, availability = ? WHERE id = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, c.getName());
+            ps.setString(2, c.getSpecialization());
+            ps.setString(3, c.getAvailability());
+            ps.setInt(4, c.getId());
+
+            ps.executeUpdate();
+            System.out.println("Updated");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public boolean counselorExists(int id) {
+        String sql = "SELECT 1 FROM Counselors WHERE id = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
     }
     public ArrayList<String> getAllCounselorNames() {
