@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CounselorDAO {
+    
     public boolean deleteCounselorByName(String name) {
         String getIdSql = "SELECT id FROM Counselors WHERE name = ?";
         String deleteAppointmentsSql = "DELETE FROM Appointments WHERE counselor_id = ?";

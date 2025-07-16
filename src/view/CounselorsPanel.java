@@ -4,6 +4,7 @@
  */
 package view;
 
+import controllers.CounselorController;
 import dao.CounselorDAO;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -12,15 +13,12 @@ import model.Counselor;
 
 public class CounselorsPanel extends javax.swing.JPanel {
     
-    CounselorDAO dao = new CounselorDAO();
-    
     private void loadCounselorsIntoTable() {
-        ArrayList<Counselor> list = dao.getAllCounselors();
-
+        ArrayList<Counselor> list = CounselorController.getAllCounselors();
 
         String[] columnNames = { "ID", "Name", "Specialization", "Availability" };
-        
         Object[][] data = new Object[list.size()][4];
+
         for (int i = 0; i < list.size(); i++) {
             Counselor c = list.get(i);
             data[i][0] = c.getId();
@@ -29,13 +27,9 @@ public class CounselorsPanel extends javax.swing.JPanel {
             data[i][3] = c.getAvailability();
         }
 
-        // Set model to the table
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            data,
-            columnNames
-        ));
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(data, columnNames));
         lblSelected.setText("Selected: None");
-       
+
         jTable1.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 int selectedRow = jTable1.getSelectedRow();
@@ -47,8 +41,8 @@ public class CounselorsPanel extends javax.swing.JPanel {
                     
                     txtCounselorName.setText(name);  
                     cbSpeciality.setSelectedItem(speciality);
-                    cbAvailibility.setSelectedItem(availibility);                  
-                    
+                    cbAvailibility.setSelectedItem(availibility);
+
                     lblSelected.setText("Selected: " + name + " (Row " + selectedRow + ")");
                 } else {
                     txtCounselorName.setText("");
@@ -58,7 +52,7 @@ public class CounselorsPanel extends javax.swing.JPanel {
                     lblSelected.setText("Selected: None");
                 }
             }
-        });        
+        });
     }
 
     /**
@@ -220,7 +214,6 @@ public class CounselorsPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddCounselorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCounselorActionPerformed
-        
         String name = txtCounselorName.getText().trim();
         String specialization = cbSpeciality.getSelectedItem().toString();
         String availability = cbAvailibility.getSelectedItem().toString();
@@ -230,80 +223,67 @@ public class CounselorsPanel extends javax.swing.JPanel {
             return;
         }
 
-        Counselor newCounselor = new Counselor(0, name, specialization, availability);
-
-        try {
-            dao.insertCounselor(newCounselor);
+        boolean success = CounselorController.addCounselor(name,specialization,availability);
+        if (success) {
             JOptionPane.showMessageDialog(this, "Counselor added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
             loadCounselorsIntoTable();
-
-            // Reset form
-            resetForm();
-
-            // You can also reload the jTable1 data if needed here
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Failed to add counselor.\n" + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-        }    
-        
+            txtCounselorName.setText("");
+            cbSpeciality.setSelectedIndex(0);
+            cbAvailibility.setSelectedIndex(0);
+        } else {
+            JOptionPane.showMessageDialog(this, "Failed to add counselor.", "Error", JOptionPane.ERROR_MESSAGE);
+        }        
     }//GEN-LAST:event_btnAddCounselorActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        
         int selectedRow = jTable1.getSelectedRow();
 
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(this, "Please select a counselor to delete.", "No Selection", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
+       
         // Assuming the name is in column 0
         String name = jTable1.getValueAt(selectedRow, 1).toString();
-        System.out.println(name);
+        System.out.println(name);        
         int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete " + name + "?", "Confirm", JOptionPane.YES_NO_OPTION);
+        
         if (confirm != JOptionPane.YES_OPTION) return;
-
-        boolean success = dao.deleteCounselorByName(name);
+        boolean success = CounselorController.deleteCounselor(name);
 
         if (success) {
+
             JOptionPane.showMessageDialog(this, "Counselor deleted.");
             ((DefaultTableModel) jTable1.getModel()).removeRow(selectedRow);
             lblSelected.setText("");  // Clear label if needed
         } else {
             JOptionPane.showMessageDialog(this, "Failed to delete counselor.", "Error", JOptionPane.ERROR_MESSAGE);
-        }      
+        }              
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        
+                                     
         String name = txtCounselorName.getText().trim();
         String specialization = cbSpeciality.getSelectedItem() != null ? cbSpeciality.getSelectedItem().toString() : "";
         String availability = cbAvailibility.getSelectedItem() != null ? cbAvailibility.getSelectedItem().toString() : "";
 
-        if (name.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter the counselor's name.", "Input Error", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        
         int selectedRow = jTable1.getSelectedRow();
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(this, "Please select a counselor from the table first.", "Selection Error", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
-        int id = dao.getCounselorIdByName(jTable1.getModel().getValueAt(selectedRow, 1).toString());
-        if (id == -1) {
-            JOptionPane.showMessageDialog(this, "Counselor not found in the system.", "Update Error", JOptionPane.ERROR_MESSAGE);
-            return;
+
+        String originalName = jTable1.getModel().getValueAt(selectedRow, 1).toString();
+        boolean updated = CounselorController.updateCounselor(originalName, name, specialization, availability);
+
+        if (updated) {
+            JOptionPane.showMessageDialog(this, "Counselor updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            loadCounselorsIntoTable();
+            resetForm();
+        } else {
+            JOptionPane.showMessageDialog(this, "Failed to update counselor.", "Update Error", JOptionPane.ERROR_MESSAGE);
         }
-
-        Counselor updated = new Counselor(id, name, specialization, availability);
-        dao.updateCounselor(updated);  // optionally check if update succeeded
-
-        JOptionPane.showMessageDialog(this, "Counselor updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-
-        loadCounselorsIntoTable();
-        resetForm();
     }
 
     private void resetForm() {

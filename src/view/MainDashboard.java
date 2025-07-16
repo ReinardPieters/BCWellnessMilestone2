@@ -1,13 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package view;
 
-/**
- *
- * @author reina
- */
 public class MainDashboard extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MainDashboard.class.getName());
@@ -25,8 +17,10 @@ public class MainDashboard extends javax.swing.JFrame {
         // Add your actual AppointmentPanel
         AppointmentPanel appointmentPanel = new AppointmentPanel();
         CounselorsPanel counselorsPanel = new CounselorsPanel();
+        FeedbackPanel feedbackPanel = new FeedbackPanel();
         jTabbedPane1.addTab("Appointments", appointmentPanel);
         jTabbedPane1.addTab("Counselors", counselorsPanel);
+        jTabbedPane1.addTab("Feedback", feedbackPanel);
     }
 
 

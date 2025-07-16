@@ -4,10 +4,10 @@
  */
 package view.appointmentsPanels;
 
-import dao.AppointmentDAO;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import controllers.AppointmentsController;
 
 /**
  *
@@ -38,45 +38,20 @@ public class CancelAppointments extends javax.swing.JPanel {
 
     public void setNewTable(){
         String[] columns = { "Student Name", "Counselor Name", "Date", "Time" };
-        DefaultTableModel model = new DefaultTableModel(columns, 0);
-        jTable1.setModel(model); // Set model to your form’s table
+        DefaultTableModel model = new DefaultTableModel(columns, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Disable editing for all cells
+            }
+        };
+        jTable1.setModel(model); 
 
-        // Load data from database
-        AppointmentDAO dao = new AppointmentDAO();
-        ArrayList<String[]> data = dao.getAllAppointments();
+        ArrayList<String[]> data = AppointmentsController.getAllAppointments();
 
         for (String[] row : data) {
             model.addRow(row);
-        }        
+        }    
     }
-    private void deleteSelectedAppointment() {
-        int selectedRow = jTable1.getSelectedRow();
-
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Please select an appointment to delete.", "No Selection", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        String studentName = jTable1.getValueAt(selectedRow, 0).toString();
-        String counselorName = jTable1.getValueAt(selectedRow, 1).toString();
-        String date = jTable1.getValueAt(selectedRow, 2).toString();
-        String time = jTable1.getValueAt(selectedRow, 3).toString();
-
-        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this appointment?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
-        if (confirm != JOptionPane.YES_OPTION) return;
-
-        AppointmentDAO dao = new AppointmentDAO();
-        boolean success = dao.deleteAppointment(studentName, counselorName, date, time);
-
-        if (success) {
-            ((DefaultTableModel) jTable1.getModel()).removeRow(selectedRow);
-            JOptionPane.showMessageDialog(this, "Appointment deleted successfully.");
-            setNewTable();
-        } else {
-            JOptionPane.showMessageDialog(this, "Failed to delete appointment.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -104,7 +79,7 @@ public class CancelAppointments extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        btnCancel.setText("Cancel");
+        btnCancel.setText("Delete");
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelActionPerformed(evt);
@@ -142,7 +117,31 @@ public class CancelAppointments extends javax.swing.JPanel {
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         // TODO add your handling code here:
-        deleteSelectedAppointment();
+        int selectedRow = jTable1.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select an appointment to delete.", "No Selection", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String studentName = jTable1.getValueAt(selectedRow, 0).toString();
+        String counselorName = jTable1.getValueAt(selectedRow, 1).toString();
+        String date = jTable1.getValueAt(selectedRow, 2).toString();
+        String time = jTable1.getValueAt(selectedRow, 3).toString();
+        
+        
+        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this appointment?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
+        
+        if (confirm != JOptionPane.YES_OPTION) return;
+        
+        boolean success = AppointmentsController.deleteSelectedAppointment(studentName, counselorName, date, time);
+
+        if (success) {
+            ((DefaultTableModel) jTable1.getModel()).removeRow(selectedRow);
+            JOptionPane.showMessageDialog(this, "Appointment deleted successfully.");
+            setNewTable();
+        } else {
+            JOptionPane.showMessageDialog(this, "Failed to delete appointment.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnCancelActionPerformed
 
 

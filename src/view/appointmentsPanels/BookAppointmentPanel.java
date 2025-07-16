@@ -4,16 +4,11 @@
  */
 package view.appointmentsPanels;
 
-import dao.AppointmentDAO;
-import dao.CounselorDAO;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.ZoneId;
+import controllers.AppointmentsController;
+import controllers.CounselorController;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import model.Appointment;
-import model.Counselor;
-import utils.TimeUtils;
+
 
 /**
  *
@@ -34,14 +29,14 @@ public class BookAppointmentPanel extends javax.swing.JPanel {
         populateCounselorComboBox();
     }
     private void populateCounselorComboBox() {
-        CounselorDAO dao = new CounselorDAO();
-        ArrayList<String> counselorNames = dao.getAllCounselorNames();
-
         cbCounselor.removeAllItems(); // Clear existing items if any
+
+        ArrayList<String> counselorNames = CounselorController.getAllCounselorNames();
         for (String name : counselorNames) {
             cbCounselor.addItem(name);
         }
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -59,10 +54,10 @@ public class BookAppointmentPanel extends javax.swing.JPanel {
         cbTime = new javax.swing.JComboBox<>();
         lblCounselor = new javax.swing.JLabel();
         cbCounselor = new javax.swing.JComboBox<>();
-        dcDate = new com.toedter.calendar.JDateChooser();
         submit = new javax.swing.JButton();
+        dcDate = new com.toedter.calendar.JDateChooser();
 
-        lblStudentName.setText("StudentName:");
+        lblStudentName.setText("Student:");
 
         txtStudentName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -93,17 +88,18 @@ public class BookAppointmentPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lblDate)
-                    .addComponent(dcDate, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblStudentName)
-                    .addComponent(txtStudentName, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
-                    .addComponent(lblCounselor)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblTime)
-                    .addComponent(cbCounselor, 0, 189, Short.MAX_VALUE)
-                    .addComponent(cbTime, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(submit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(347, Short.MAX_VALUE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(lblDate)
+                        .addComponent(lblStudentName)
+                        .addComponent(txtStudentName)
+                        .addComponent(lblCounselor)
+                        .addComponent(dcDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cbCounselor, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(cbTime, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(submit, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)))
+                .addContainerGap(338, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -120,78 +116,38 @@ public class BookAppointmentPanel extends javax.swing.JPanel {
                 .addComponent(lblDate)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(dcDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(7, 7, 7)
                 .addComponent(lblTime)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cbTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(submit)
-                .addContainerGap(181, Short.MAX_VALUE))
+                .addContainerGap(178, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
     
     private void txtStudentNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtStudentNameActionPerformed
         // TODO add your handling code here:
+     
     }//GEN-LAST:event_txtStudentNameActionPerformed
 
     
     private void submitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitActionPerformed
         String studentName = txtStudentName.getText().trim();
-        String counselorName = cbCounselor.getSelectedItem().toString();
-        String timeStr = cbTime.getSelectedItem().toString();
+        String counselorName = cbCounselor.getSelectedItem() != null ? cbCounselor.getSelectedItem().toString() : null;
+        String timeStr = cbTime.getSelectedItem() != null ? cbTime.getSelectedItem().toString() : null;
         java.util.Date selectedDate = dcDate.getDate();
 
-        // 1. Validate empty fields
-        if (studentName.isEmpty() || selectedDate == null || timeStr == null || counselorName == null) {
-            JOptionPane.showMessageDialog(this, "Please fill in all fields.", "Missing Information", JOptionPane.WARNING_MESSAGE);
-            return;
+        String result = AppointmentsController.bookAppointment(studentName, counselorName, selectedDate, timeStr);
+
+        if (result.equals("SUCCESS")) {
+            JOptionPane.showMessageDialog(this, "Appointment slot is valid. Appointment saved!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            populateCounselorComboBox();
+        } else {
+            JOptionPane.showMessageDialog(this, result, "Error", JOptionPane.WARNING_MESSAGE);
         }
-
-        // 2. Convert date and time
-        LocalDate date = selectedDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalTime time = LocalTime.parse(timeStr);
-
-        // 3. Get counselor ID and full object
-        CounselorDAO counselorDAO = new CounselorDAO();
-        int counselorId = counselorDAO.getCounselorIdByName(counselorName);
-        Counselor counselor = counselorDAO.getCounselorByName(counselorName);
-
-        if (counselorId == -1 || counselor == null) {
-            JOptionPane.showMessageDialog(this, "Counselor not found in database.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        // 4. Check availability
-        System.out.println("HERERERER"+counselor.getAvailability());
-        if (!TimeUtils.isWithinRange(counselor.getAvailability(), time)) {
-            JOptionPane.showMessageDialog(this, "Selected time is outside the counselor's availability.", "Invalid Time", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        System.out.println("Availability: " + counselor.getAvailability());
-        System.out.println("Selected Time: " + time);
-
-        // 5. Check if counselor is already booked
-        AppointmentDAO appointmentDAO = new AppointmentDAO();
-        boolean isBooked = appointmentDAO.isCounselorBooked(
-            counselorId,
-            java.sql.Date.valueOf(date),
-            java.sql.Time.valueOf(time)
-        );
-
-        if (isBooked) {
-            JOptionPane.showMessageDialog(this, "This counselor is already booked at the selected time.", "Conflict", JOptionPane.WARNING_MESSAGE);
-            return;
-            
-    }
-
-    // 6. Success — show a confirmation (insert logic comes next)
-        JOptionPane.showMessageDialog(this, "Appointment slot is valid. Proceed to save!", "Success", JOptionPane.INFORMATION_MESSAGE);
-
-   
-        Appointment appointment = new Appointment(studentName, counselorId, date, time, "Scheduled");
-        appointmentDAO.addAppointment(appointment); 
-        populateCounselorComboBox();
     }//GEN-LAST:event_submitActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cbCounselor;
     private javax.swing.JComboBox<String> cbTime;
