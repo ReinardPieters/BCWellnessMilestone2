@@ -3,9 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package view.appointmentsPanels;
+import controllers.AppointmentsController;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
-import dao.AppointmentDAO;
+
 
 
 /**
@@ -20,13 +21,13 @@ public class ViewAppointmentsPanel extends javax.swing.JPanel {
     public ViewAppointmentsPanel() {
         initComponents();
 
+
         String[] columns = { "Student Name", "Counselor Name", "Date", "Time" };
         DefaultTableModel model = new DefaultTableModel(columns, 0);
-        jTable1.setModel(model); // Set model to your form’s table
+        jTable1.setModel(model);
 
-        // Load data from database
-        AppointmentDAO dao = new AppointmentDAO();
-        ArrayList<String[]> data = dao.getAllAppointments();
+        // 🔁 Use controller instead of DAO
+        ArrayList<String[]> data = AppointmentsController.getAllAppointments();
 
         for (String[] row : data) {
             model.addRow(row);
