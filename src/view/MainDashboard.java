@@ -1,5 +1,9 @@
 package view;
 
+import javax.swing.ImageIcon;
+import java.awt.*;
+import java.net.URL;
+
 public class MainDashboard extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MainDashboard.class.getName());
@@ -11,6 +15,26 @@ public class MainDashboard extends javax.swing.JFrame {
         initComponents();
         setTitle("BC Student Wellness Dashboard"); 
         setResizable(false);
+        
+        jPanel2.setPreferredSize(new Dimension(getWidth(), 96));
+        
+        // Set logo next to label text
+        URL location = getClass().getResource("/images/logo.png");
+        if (location != null) {
+            ImageIcon originalIcon = new ImageIcon(location);
+            Image scaledImage = originalIcon.getImage().getScaledInstance(96, 96, Image.SCALE_SMOOTH);
+            ImageIcon resizedIcon = new ImageIcon(scaledImage);
+
+            Logo.setText(""); // Hides Logo text
+            Logo.setIcon(resizedIcon);  // Set resized icon to JLabel
+            Logo.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT); // Text to the right of image
+            Logo.setPreferredSize(new Dimension(96, 96));
+            Logo.setIconTextGap(10); // Gap between image and text
+            
+        } else {
+            System.err.println("Logo image not found at /images/logo.png");
+        }
+
         // Remove default tab created by initComponents
         jTabbedPane1.remove(0); // removes "tab1"
 
@@ -51,16 +75,20 @@ public class MainDashboard extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        Logo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jTabbedPane1.setName("tabbedPane"); // NOI18N
 
+        jPanel1.setMaximumSize(new java.awt.Dimension(64, 64));
+        jPanel1.setMinimumSize(new java.awt.Dimension(64, 64));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 923, Short.MAX_VALUE)
+            .addGap(0, 887, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -70,32 +98,47 @@ public class MainDashboard extends javax.swing.JFrame {
         jTabbedPane1.addTab("tab1", jPanel1);
 
         jPanel2.setBackground(new java.awt.Color(153, 153, 153));
+        jPanel2.setMaximumSize(new java.awt.Dimension(876, 96));
+        jPanel2.setMinimumSize(new java.awt.Dimension(876, 96));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel1.setText("Welcome");
+        jLabel1.setMaximumSize(new java.awt.Dimension(300, 96));
+        jLabel1.setMinimumSize(new java.awt.Dimension(300, 96));
+        jLabel1.setPreferredSize(new java.awt.Dimension(300, 96));
+
+        Logo.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        Logo.setText("Logo");
+        Logo.setMaximumSize(new java.awt.Dimension(96, 96));
+        Logo.setMinimumSize(new java.awt.Dimension(96, 96));
+        Logo.setPreferredSize(new java.awt.Dimension(64, 64));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(408, 408, 408)
-                .addComponent(jLabel1)
-                .addContainerGap(415, Short.MAX_VALUE))
+                .addGap(0, 0, 0)
+                .addComponent(Logo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(280, 280, 280)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(243, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(jLabel1)
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addGap(0, 0, 0)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Logo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
@@ -108,6 +151,8 @@ public class MainDashboard extends javax.swing.JFrame {
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
+
+        jPanel2.getAccessibleContext().setAccessibleName("");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -140,6 +185,7 @@ public class MainDashboard extends javax.swing.JFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Logo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
