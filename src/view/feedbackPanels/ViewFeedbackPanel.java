@@ -22,6 +22,23 @@ public class ViewFeedbackPanel extends javax.swing.JPanel {
         };
         jTable1.setModel(model); // Set model to your form’s table
 
+        // Add listener for row click and display comment
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                int row = jTable1.rowAtPoint(evt.getPoint());
+                if (row >= 0) {
+                    String comment = jTable1.getValueAt(row, 3).toString(); // 4th column = "Comment"
+                    javax.swing.JOptionPane.showMessageDialog(
+                        ViewFeedbackPanel.this,
+                        comment,
+                        "Feedback Comment",
+                        javax.swing.JOptionPane.INFORMATION_MESSAGE
+                    );
+                }
+            }
+        });
+        
         // Load data from database
         FeedbackController controller = new FeedbackController();
         ArrayList<String[]> data = controller.getAllFeedbackTableRows(); // Correct method call
@@ -60,13 +77,11 @@ public class ViewFeedbackPanel extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 548, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
     }// </editor-fold>//GEN-END:initComponents
 

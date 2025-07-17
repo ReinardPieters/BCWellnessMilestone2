@@ -11,6 +11,7 @@ public class CounselorDAO {
     public boolean deleteCounselorByName(String name) {
         String getIdSql = "SELECT id FROM Counselors WHERE name = ?";
         String deleteAppointmentsSql = "DELETE FROM Appointments WHERE counselor_id = ?";
+        String deleteFeedbackSql = "DELETE FROM Feedback WHERE counselor_id = ?";
         String deleteCounselorSql = "DELETE FROM Counselors WHERE id = ?";
 
         try (Connection conn = DBConnection.getConnection()) {
@@ -34,6 +35,11 @@ public class CounselorDAO {
             try (PreparedStatement deleteAppointmentsStmt = conn.prepareStatement(deleteAppointmentsSql)) {
                 deleteAppointmentsStmt.setInt(1, counselorId);
                 deleteAppointmentsStmt.executeUpdate();
+            }
+            
+            try (PreparedStatement deleteFeedbackStmt = conn.prepareStatement(deleteFeedbackSql)) {
+                deleteFeedbackStmt.setInt(1, counselorId);
+                deleteFeedbackStmt.executeUpdate();
             }
 
             // Delete counselor

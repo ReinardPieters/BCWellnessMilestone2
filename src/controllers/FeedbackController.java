@@ -44,8 +44,21 @@ public class FeedbackController {
         return feedbackDAO.getAllFeedback();
     }
 
-    public boolean updateFeedback(int id, int rating, String comment) {
-        return feedbackDAO.updateFeedback(id, rating, comment);
+    public static String updateFeedback(int id, String studentName, String counselorName, int rating, String comment) {
+        if (studentName == null || studentName.trim().isEmpty() || counselorName == null || counselorName.isEmpty()) {
+            return "Please fill in all fields.";
+        }
+
+        int counselorId = new CounselorDAO().getCounselorIdByName(counselorName);
+
+        if (counselorId == -1) {
+            return "Counselor not found in the database.";
+        }
+
+        Feedback updatedFeedback = new Feedback(id, studentName.trim(), counselorId, rating, comment.trim());
+        boolean success = new FeedbackDAO().updateFeedback(updatedFeedback);
+
+        return success ? "SUCCESS" : "Failed to update feedback.";
     }
 
     public static boolean deleteFeedbackById(int id) {

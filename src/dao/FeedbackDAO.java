@@ -79,15 +79,17 @@ public class FeedbackDAO {
         return list;
     }
 
-    public boolean updateFeedback(int id, int rating, String comment) {
-        String sql = "UPDATE Feedback SET rating = ?, comment = ? WHERE id = ?";
+    public boolean updateFeedback(Feedback feedback) {
+        String sql = "UPDATE Feedback SET student = ?, counselor_id = ?, rating = ?, comment = ? WHERE id = ?";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setInt(1, rating);
-            ps.setString(2, comment);
-            ps.setInt(3, id);
+            ps.setString(1, feedback.getStudent());
+            ps.setInt(2, feedback.getCounselorID());
+            ps.setInt(3, feedback.getRating());
+            ps.setString(4, feedback.getComment());
+            ps.setInt(5, feedback.getId());
 
             return ps.executeUpdate() > 0;
 
