@@ -52,6 +52,7 @@ public class ViewAppointmentsPanel extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
+        jTable1.setBackground(new java.awt.Color(235, 235, 245));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},

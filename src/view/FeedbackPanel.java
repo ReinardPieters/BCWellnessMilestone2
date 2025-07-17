@@ -67,6 +67,10 @@ public class FeedbackPanel extends javax.swing.JPanel {
 
         jLabel2.setText("Manage Appointments ");
 
+        setBackground(new java.awt.Color(242, 242, 255));
+
+        fPanel.setBackground(new java.awt.Color(242, 242, 255));
+
         javax.swing.GroupLayout fPanelLayout = new javax.swing.GroupLayout(fPanel);
         fPanel.setLayout(fPanelLayout);
         fPanelLayout.setHorizontalGroup(

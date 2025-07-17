@@ -57,6 +57,8 @@ public class BookAppointmentPanel extends javax.swing.JPanel {
         submit = new javax.swing.JButton();
         dcDate = new com.toedter.calendar.JDateChooser();
 
+        setBackground(new java.awt.Color(242, 242, 255));
+
         lblStudentName.setText("Student:");
 
         txtStudentName.addActionListener(new java.awt.event.ActionListener() {

@@ -78,6 +78,8 @@ public class AddFeedbackPanel extends javax.swing.JPanel {
         lblDate1 = new javax.swing.JLabel();
         fSubmit = new javax.swing.JButton();
 
+        setBackground(new java.awt.Color(242, 242, 255));
+
         jRadioButton1.setText("1");
         jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

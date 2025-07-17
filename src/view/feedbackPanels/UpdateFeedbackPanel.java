@@ -62,6 +62,9 @@ public class UpdateFeedbackPanel extends javax.swing.JPanel {
         btnUpdate = new javax.swing.JButton();
         lblRow = new javax.swing.JLabel();
 
+        setBackground(new java.awt.Color(242, 242, 255));
+
+        jTable1.setBackground(new java.awt.Color(235, 235, 245));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -128,6 +131,7 @@ public class UpdateFeedbackPanel extends javax.swing.JPanel {
         UpdatePanel updatePanel = new UpdatePanel(studentName, counselorName, rating, comment, id);
         JDialog dialog = new JDialog((java.awt.Frame) SwingUtilities.getWindowAncestor(this), "Update Feedback", true);
         dialog.setContentPane(updatePanel);
+        dialog.setResizable(false);
         dialog.pack();
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true); // blocks here until dialog is closed

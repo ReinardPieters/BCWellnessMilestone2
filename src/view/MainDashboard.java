@@ -13,8 +13,9 @@ public class MainDashboard extends javax.swing.JFrame {
      */
     public MainDashboard() {
         // Launch in middle of screen
-        this.setSize(887, 506);
-        this.setLocationRelativeTo(null);
+        setSize(887, 506);
+        setLocationRelativeTo(null);
+        getContentPane().setBackground(new Color(240, 240, 255)); // light background
         
         // Set the application icon
         URL iconURL = getClass().getResource("/images/logo.png");
@@ -59,7 +60,7 @@ public class MainDashboard extends javax.swing.JFrame {
         jTabbedPane1.addTab("Counselors", counselorsPanel);
         jTabbedPane1.addTab("Feedback", feedbackPanel);
         
-            // Update jLabel1 text when tab is changed
+        // Update jLabel1 text when tab is changed
         jTabbedPane1.addChangeListener(e -> {
             int selectedIndex = jTabbedPane1.getSelectedIndex();
             if (selectedIndex != -1) {
@@ -91,9 +92,12 @@ public class MainDashboard extends javax.swing.JFrame {
         Logo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(242, 242, 255));
 
+        jTabbedPane1.setBackground(new java.awt.Color(242, 242, 255));
         jTabbedPane1.setName("tabbedPane"); // NOI18N
 
+        jPanel1.setBackground(new java.awt.Color(242, 242, 255));
         jPanel1.setMaximumSize(new java.awt.Dimension(64, 64));
         jPanel1.setMinimumSize(new java.awt.Dimension(64, 64));
 
@@ -110,7 +114,7 @@ public class MainDashboard extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("tab1", jPanel1);
 
-        jPanel2.setBackground(new java.awt.Color(153, 153, 153));
+        jPanel2.setBackground(new java.awt.Color(153, 153, 170));
         jPanel2.setMaximumSize(new java.awt.Dimension(876, 96));
         jPanel2.setMinimumSize(new java.awt.Dimension(876, 96));
 
@@ -144,7 +148,7 @@ public class MainDashboard extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Logo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

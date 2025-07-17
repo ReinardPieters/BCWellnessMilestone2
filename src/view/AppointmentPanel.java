@@ -38,6 +38,8 @@ public class AppointmentPanel extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
 
+        setBackground(new java.awt.Color(242, 242, 255));
+
         jButton1.setText("Book Appointment");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -62,6 +64,8 @@ public class AppointmentPanel extends javax.swing.JPanel {
         });
 
         jLabel1.setText("Manage Appointments ");
+
+        jPanel1.setBackground(new java.awt.Color(242, 242, 255));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

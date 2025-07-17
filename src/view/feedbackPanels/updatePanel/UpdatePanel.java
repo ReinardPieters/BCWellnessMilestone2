@@ -84,6 +84,8 @@ public class UpdatePanel extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         idLabel = new javax.swing.JLabel();
 
+        setBackground(new java.awt.Color(242, 242, 255));
+
         lblCounselor.setText("Counselor:");
 
         cbCounselor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));

@@ -99,6 +99,9 @@ public class CounselorsPanel extends javax.swing.JPanel {
         lblSelected = new javax.swing.JLabel();
         btnUpdate = new javax.swing.JButton();
 
+        setBackground(new java.awt.Color(242, 242, 255));
+
+        jTable1.setBackground(new java.awt.Color(235, 235, 245));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},

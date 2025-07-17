@@ -66,6 +66,9 @@ public class CancelAppointments extends javax.swing.JPanel {
         btnCancel = new javax.swing.JButton();
         lblRow = new java.awt.Label();
 
+        setBackground(new java.awt.Color(242, 242, 255));
+
+        jTable1.setBackground(new java.awt.Color(235, 235, 245));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
