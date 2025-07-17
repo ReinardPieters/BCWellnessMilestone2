@@ -64,6 +64,17 @@ public class AppointmentsController {
         AppointmentDAO dao = new AppointmentDAO();
         return dao.getAllAppointments();
     }
-   
+    public static boolean updateAppointment(String oldStudent, String oldDate, String oldTime,
+                                            String newStudent, String newCounselorName,
+                                            String newDate, String newTime, String newStatus) {
+
+        int counselorId = dao.CounselorDAO.getCounselorIdByName(newCounselorName);
+        if (counselorId == -1) return false;
+
+        AppointmentDAO dao = new AppointmentDAO();
+        return dao.updateAppointment(oldStudent, oldDate, oldTime,
+                                     newStudent, counselorId, newDate, newTime, newStatus);
+    }
+  
         
 }

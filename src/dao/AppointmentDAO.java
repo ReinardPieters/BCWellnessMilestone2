@@ -12,30 +12,62 @@ import java.util.ArrayList;
 
 public class AppointmentDAO {
 
-    public ArrayList<String[]> getAllAppointments(){
-        ArrayList<String[]> appointments = new ArrayList<>();
-        String sql = "SELECT a.student, c.name AS counselor_name, a.date, a.time " +
-                     "FROM appointments a JOIN counselors c ON a.counselor_id = c.id";
+    public ArrayList<String[]> getAllAppointments() {
+    ArrayList<String[]> appointments = new ArrayList<>();
+    String sql = "SELECT a.student, c.name AS counselor_name, a.date, a.time, a.status " +
+                 "FROM appointments a JOIN counselors c ON a.counselor_id = c.id";
+
+    try (Connection conn = DBConnection.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql);
+         ResultSet rs = stmt.executeQuery()) {
+
+        while (rs.next()) {
+            String student = rs.getString("student");
+            String counselor = rs.getString("counselor_name");
+            String date = rs.getString("date");
+            String time = rs.getString("time");
+            String status = rs.getString("status");
+
+            if (status == null || status.trim().isEmpty()) {
+                status = "Not Completed"; // Default if status is missing
+            }
+
+            appointments.add(new String[] { student, counselor, date, time, status });
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return appointments;
+}
+
+    public boolean updateAppointment(String oldStudentName, String oldDate, String oldTime,
+                                     String newStudentName, int newCounselorId,
+                                     String newDate, String newTime, String newStatus) {
+        String sql = "UPDATE Appointments SET student = ?, counselor_id = ?, date = ?, time = ?, status = ? " +
+                     "WHERE student = ? AND date = ? AND time = ?";
 
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            while (rs.next()) {
-                String student = rs.getString("student");
-                String counselor = rs.getString("counselor_name");
-                String date = rs.getString("date");
-                String time = rs.getString("time");
+            stmt.setString(1, newStudentName);
+            stmt.setInt(2, newCounselorId);
+            stmt.setString(3, newDate);
+            stmt.setString(4, newTime);
+            stmt.setString(5, newStatus);
+            stmt.setString(6, oldStudentName);
+            stmt.setString(7, oldDate);
+            stmt.setString(8, oldTime);
 
-                appointments.add(new String[] { student, counselor, date, time });
-            }
+            int rowsUpdated = stmt.executeUpdate();
+            return rowsUpdated > 0;
 
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-
-        return appointments;       
-    }    
+    }
     public boolean deleteAppointment(String student, String counselor, String date, String time) {
         String sql = "DELETE FROM appointments WHERE student = ? AND counselor_id = (SELECT id FROM counselors WHERE name = ?) AND date = ? AND time = ?";
 

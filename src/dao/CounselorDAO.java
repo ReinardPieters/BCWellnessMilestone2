@@ -55,6 +55,7 @@ public class CounselorDAO {
             return false;
         }
     }
+    
 
 
 
@@ -151,7 +152,7 @@ public class CounselorDAO {
 
         return names;
     }
-    public int getCounselorIdByName(String name) {
+    public static int getCounselorIdByName(String name) {
         String sql = "SELECT id FROM Counselors WHERE name = ?";
         try (Connection conn = DBConnection.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql)) {
