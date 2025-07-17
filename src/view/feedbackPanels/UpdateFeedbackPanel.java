@@ -1,13 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package view.feedbackPanels;
 
-/**
- *
- * @author vaugh
- */
+import view.feedbackPanels.updatePanel.UpdatePanel;
+import controllers.FeedbackController;
+
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.*;
+
 public class UpdateFeedbackPanel extends javax.swing.JPanel {
 
     /**
@@ -15,6 +14,38 @@ public class UpdateFeedbackPanel extends javax.swing.JPanel {
      */
     public UpdateFeedbackPanel() {
         initComponents();
+        
+        lblRow.setText("Selected: None");
+
+        jTable1.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                int selectedRow = jTable1.getSelectedRow();
+                if (selectedRow != -1) {
+                    String student = jTable1.getValueAt(selectedRow, 0).toString();
+                    lblRow.setText("Selected: " + student + " (Row " + selectedRow + ")");
+                } else {
+                    lblRow.setText("Selected: None");
+                }
+            }
+        });
+
+        loadFeedbackTable();
+    }
+    
+        private void loadFeedbackTable() {
+        String[] columns = { "Student Name", "Counselor Name", "Rating", "Comment", "ID" };
+        DefaultTableModel model = new DefaultTableModel(columns, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Make table cells non-editable
+            }
+        };
+        jTable1.setModel(model);
+
+        ArrayList<String[]> feedbackList = FeedbackController.getAllFeedbackTableRowsWithID();
+        for (String[] row : feedbackList) {
+            model.addRow(row);
+        }
     }
 
     /**
@@ -26,19 +57,89 @@ public class UpdateFeedbackPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        btnUpdate = new javax.swing.JButton();
+        lblRow = new javax.swing.JLabel();
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        btnUpdate.setText("Update");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
+
+        lblRow.setText("Selection");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 548, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 685, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnUpdate)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblRow)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 420, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnUpdate)
+                    .addComponent(lblRow))
+                .addContainerGap(100, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        int selectedRow = jTable1.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a row to update.");
+            return;
+        }
+
+        String studentName = jTable1.getValueAt(selectedRow, 0).toString();
+        String counselorName = jTable1.getValueAt(selectedRow, 1).toString();
+        int rating = Integer.parseInt(jTable1.getValueAt(selectedRow, 2).toString());
+        String comment = jTable1.getValueAt(selectedRow, 3).toString();
+        String id = jTable1.getValueAt(selectedRow, 4).toString();
+
+        UpdatePanel updatePanel = new UpdatePanel(studentName, counselorName, rating, comment, id);
+        JDialog dialog = new JDialog((java.awt.Frame) SwingUtilities.getWindowAncestor(this), "Update Feedback", true);
+        dialog.setContentPane(updatePanel);
+        dialog.pack();
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true); // blocks here until dialog is closed
+
+        // After the dialog closes, refresh the table
+        loadFeedbackTable();
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnUpdate;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JLabel lblRow;
     // End of variables declaration//GEN-END:variables
 }

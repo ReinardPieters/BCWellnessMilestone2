@@ -1,4 +1,3 @@
-
 package view;
 
 import view.feedbackPanels.AddFeedbackPanel;
@@ -42,11 +41,11 @@ public class FeedbackPanel extends javax.swing.JPanel {
         jButton8 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         fPanel = new javax.swing.JPanel();
-        faddButton = new javax.swing.JButton();
         fviewButton = new javax.swing.JButton();
         fupdateButton = new javax.swing.JButton();
         fdeleteButton = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
+        faddFeedback = new javax.swing.JButton();
 
         jButton1.setText("Book Appointment");
 
@@ -79,16 +78,6 @@ public class FeedbackPanel extends javax.swing.JPanel {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        faddButton.setText("Add Feedback");
-        faddButton.setMaximumSize(new java.awt.Dimension(108, 23));
-        faddButton.setMinimumSize(new java.awt.Dimension(108, 23));
-        faddButton.setPreferredSize(new java.awt.Dimension(108, 23));
-        faddButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                faddButtonActionPerformed(evt);
-            }
-        });
-
         fviewButton.setText("View Feedback");
         fviewButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -112,6 +101,13 @@ public class FeedbackPanel extends javax.swing.JPanel {
 
         jLabel3.setText("Manage Feedback");
 
+        faddFeedback.setText("Add Feedback");
+        faddFeedback.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                faddFeedbackActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -121,10 +117,10 @@ public class FeedbackPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(faddButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(fviewButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(fupdateButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(fdeleteButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(fdeleteButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(faddFeedback, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(fPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -137,7 +133,7 @@ public class FeedbackPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(faddButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(faddFeedback)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(fviewButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -149,13 +145,6 @@ public class FeedbackPanel extends javax.swing.JPanel {
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void faddButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_faddButtonActionPerformed
-        fPanel.removeAll();
-        fPanel.add(new AddFeedbackPanel(), java.awt.BorderLayout.CENTER);
-        fPanel.revalidate();
-        fPanel.repaint();
-    }//GEN-LAST:event_faddButtonActionPerformed
 
     private void fviewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fviewButtonActionPerformed
         fPanel.removeAll();
@@ -172,12 +161,18 @@ public class FeedbackPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_fdeleteButtonActionPerformed
 
     private void fupdateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fupdateButtonActionPerformed
-        // TODO add your handling code here:
         fPanel.removeAll();
         fPanel.add(new UpdateFeedbackPanel(), java.awt.BorderLayout.CENTER);
         fPanel.revalidate();
         fPanel.repaint();
     }//GEN-LAST:event_fupdateButtonActionPerformed
+
+    private void faddFeedbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_faddFeedbackActionPerformed
+        fPanel.removeAll();
+        fPanel.add(new AddFeedbackPanel(), java.awt.BorderLayout.CENTER);
+        fPanel.revalidate();
+        fPanel.repaint();
+    }//GEN-LAST:event_faddFeedbackActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -188,7 +183,7 @@ public class FeedbackPanel extends javax.swing.JPanel {
     private javax.swing.ButtonGroup buttonGroup5;
     private javax.swing.ButtonGroup buttonGroup6;
     private javax.swing.JPanel fPanel;
-    private javax.swing.JButton faddButton;
+    private javax.swing.JButton faddFeedback;
     private javax.swing.JButton fdeleteButton;
     private javax.swing.JButton fupdateButton;
     private javax.swing.JButton fviewButton;
