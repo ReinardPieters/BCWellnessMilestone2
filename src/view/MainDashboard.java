@@ -12,6 +12,15 @@ public class MainDashboard extends javax.swing.JFrame {
      * Creates new form mainDashboard
      */
     public MainDashboard() {
+        // Set the application icon
+        URL iconURL = getClass().getResource("/images/logo.png");
+        if (iconURL != null) {
+            ImageIcon icon = new ImageIcon(iconURL);
+            setIconImage(icon.getImage());
+        } else {
+            System.err.println("App icon not found at /images/logo.png");
+        }
+        
         initComponents();
         setTitle("BC Student Wellness Dashboard"); 
         setResizable(false);
