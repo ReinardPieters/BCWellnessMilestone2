@@ -62,4 +62,6 @@ public class AppointmentsController {
         AppointmentDAO dao = new AppointmentDAO();
         return dao.getAllAppointments();
     }
+   
+        
 }

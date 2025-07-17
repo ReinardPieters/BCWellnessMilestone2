@@ -75,6 +75,8 @@ public class AppointmentDAO {
             return false;
         }
     }
+    
+    
 
     // 🔹 Check if a counselor is already booked at the given date and time
     public boolean isCounselorBooked(int counselorId, Date date, Time time) {
