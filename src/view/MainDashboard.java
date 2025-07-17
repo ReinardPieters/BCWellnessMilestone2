@@ -14,13 +14,27 @@ public class MainDashboard extends javax.swing.JFrame {
         // Remove default tab created by initComponents
         jTabbedPane1.remove(0); // removes "tab1"
 
-        // Add your actual AppointmentPanel
+        // Add Panels
         AppointmentPanel appointmentPanel = new AppointmentPanel();
         CounselorsPanel counselorsPanel = new CounselorsPanel();
         FeedbackPanel feedbackPanel = new FeedbackPanel();
         jTabbedPane1.addTab("Appointments", appointmentPanel);
         jTabbedPane1.addTab("Counselors", counselorsPanel);
         jTabbedPane1.addTab("Feedback", feedbackPanel);
+        
+            // Update jLabel1 text when tab is changed
+        jTabbedPane1.addChangeListener(e -> {
+            int selectedIndex = jTabbedPane1.getSelectedIndex();
+            if (selectedIndex != -1) {
+                String tabTitle = jTabbedPane1.getTitleAt(selectedIndex);
+                jLabel1.setText(tabTitle);
+            }
+        });
+
+        // Set default label to match initially selected tab
+        if (jTabbedPane1.getTabCount() > 0) {
+            jLabel1.setText(jTabbedPane1.getTitleAt(jTabbedPane1.getSelectedIndex()));
+        }
     }
 
 
@@ -122,6 +136,8 @@ public class MainDashboard extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new MainDashboard().setVisible(true));
     }
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
